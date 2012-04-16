@@ -1,10 +1,11 @@
 
-# goblend
+# blend (WIP)
 
-Color blending library for Go and rendering toolkit.
+Color processing library and rendering toolkit for Go.
 
 ```go
 go get github.com/phrozen/goblend
 ```
+
 
 
