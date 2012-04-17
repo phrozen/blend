@@ -47,11 +47,12 @@ Example:
 ```go
 // This will just substract the Red, Green, and Blue channels of 2 images.
 // Pretty useful for finding differences between similar images.
-func Substract(s, d float64) float64 {
-  return s-d
+// (This is the actual implementation of the blend.DIFFERENCE blending mode)
+func Difference(s, d float64) float64 {
+  return math.Abs(s - d)
 }
 
-img, err := BlendImage(source, destination, Substract)
+img, err := BlendImage(source, destination, Difference)
 ```
 
 At the moment it supports the following blending modes:
