@@ -18,7 +18,7 @@ import "github.com/phrozen/blend"
 
 Use this convenience function:
 ```go
-func BlendImage(source, dest image.Image, mode BlendFunc) (image.Image, error) {
+func BlendImage(source, dest image.Image, blend BlendFunc) (image.Image, error) {
   ...
 }
 ```
@@ -26,37 +26,27 @@ func BlendImage(source, dest image.Image, mode BlendFunc) (image.Image, error) {
 For example:
 
 ```go
-//let's say we already read 2 images 'source' and 'destination'
+// Read 2 images 'source' and 'destination'
 img, err := BlendImage(source, destination, blend.COLOR_BURN)
 if err != nil {
   panic(err)
 }
 // Save img or blend it again.
+img, err := BlendImage(source, img, blend.COLOR_BURN)
 ```
 
-Easily extensible as it uses the standard library interfaces from **'image'** and **'image/color'**.
+Can be easily extended as it uses the standard library interfaces from **'image'** and **'image/color'**.
 
 ```go
-type BlendFunc func()
+type BlendFunc func(src, dst color.Color) color.Color
 ```
 
-The library uses ***float64*** for precision, math operations, and conversions to the **'image'** interfaces. A **BlendFunc** is applied to each color (RGBA) of an image (although blend modes does not use the Alpha channel atm).
+A **BlendFunc** is applied to each color (RGBA) of an image (although included blend modes does not use the Alpha channel atm). Just create your own **BlendFunc** to add custom functionality.
 
-Example:
 
-```go
-// This will just substract the Red, Green, and Blue channels of 2 images.
-// Pretty useful for finding differences between similar images.
-// (This is the actual implementation of the blend.DIFFERENCE blending mode)
-func Difference(s, d float64) float64 {
-  return math.Abs(s - d)
-}
-
-img, err := BlendImage(source, destination, Difference)
-```
+The library uses ***float64*** internally for precision, math operations, and conversions to the **'image'** interfaces. 
 
 At the moment it supports the following blending modes:
-
 + Multiply
 + Screen
 + Overlay
