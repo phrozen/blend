@@ -1,3 +1,9 @@
+/*
+	Example of blending modes using blend Go library.
+	https://github.com/Phrozen/blend
+	by Guillermo Estrada
+*/
+
 package main
 
 import (
