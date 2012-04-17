@@ -74,7 +74,7 @@ func blend(source, dest color.Color, bf blendFunc) (c rgbaf64) {
 	s := colorTorgbaf64(source)
 	d := colorTorgbaf64(dest)
 	c.r = bf(s.r, d.r)
-	c.r = bf(s.g, d.g)
+	c.g = bf(s.g, d.g)
 	c.b = bf(s.b, d.b)
 	c.a = s.a
 	return
