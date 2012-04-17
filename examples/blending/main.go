@@ -10,11 +10,11 @@ import (
 	"fmt"
 	"github.com/phrozen/blend"
 	"image"
-	"image/png"
+	"image/jpeg"
 	"os"
 )
 
-var modes1 = map[string]blend.BlendFunc{
+var modes = map[string]blend.BlendFunc{
 	"multiply":     blend.MULTIPLY,
 	"screen":       blend.SCREEN,
 	"overlay":      blend.OVERLAY,
@@ -29,22 +29,20 @@ var modes1 = map[string]blend.BlendFunc{
 	"difference":   blend.DIFFERENCE,
 	"exclusion":    blend.EXCLUSION,
 	"reflex":       blend.REFLEX,
-}
-
-var modes2 = map[string]blend.BlendFunc{
 	"linear_light": blend.LINEAR_LIGHT,
 	"pin_light":    blend.PIN_LIGHT,
 	"vivid_light":  blend.VIVID_LIGHT,
 	"hard_mix":     blend.HARD_MIX,
 }
 
-func LoadPNG(filename string) (image.Image, error) {
+
+func LoadJPG(filename string) (image.Image, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	img, err := png.Decode(file)
+	img, err := jpeg.Decode(file)
 	if err != nil {
 		return nil, err
 	}
@@ -52,13 +50,13 @@ func LoadPNG(filename string) (image.Image, error) {
 	return img, nil
 }
 
-func SavePNG(filename string, img image.Image) error {
-	file, err := os.Create(filename + ".png")
+func SaveJPG(filename string, img image.Image) error {
+	file, err := os.Create(filename + ".jpg")
 	if err != nil {
 		return err
 	}
 
-	if err := png.Encode(file, img); err != nil {
+	if err := jpeg.Encode(file, img, &jpeg.Options{85}); err != nil {
 		return err
 	}
 
@@ -74,17 +72,12 @@ func main() {
 	var err error
 	var img image.Image
 
-	dst, err := LoadPNG("dest.png")
+	dst, err := LoadJPG("dest.jpg")
 	if err != nil {
 		panic(err)
 	}
 
-	src1, err := LoadPNG("source1.png")
-	if err != nil {
-		panic(err)
-	}
-
-	src2, err := LoadPNG("source2.png")
+	src, err := LoadJPG("source.jpg")
 	if err != nil {
 		panic(err)
 	}
@@ -92,31 +85,17 @@ func main() {
 	fmt.Println("This program tests all the color blending modes in the library.")
 
 	// Testing Blending Modes with source1.png
-	for key, value := range modes1 {
-		fmt.Print("*Blending Mode: ", key, " ...")
-		img, err = blend.BlendImage(src1, dst, value)
+	for key, value := range modes {
+		fmt.Print("*Blending Mode: ", key, " ...  \t")
+		img, err = blend.BlendImage(src, dst, value)
 		if err != nil {
 			panic(err)
 		}
-		err = SavePNG(key, img)
+		err = SaveJPG(key, img)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("Saved! ", key, ".png")
-	}
-
-	// Testing Blending Modes with source2.png
-	for key, value := range modes2 {
-		fmt.Print("*Blending Mode: ", key, " ...")
-		img, err = blend.BlendImage(src2, dst, value)
-		if err != nil {
-			panic(err)
-		}
-		err = SavePNG(key, img)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println("Saved! ", key, ".png")
+		fmt.Println("Saved! ", key, ".jpg")
 	}
 
 }
