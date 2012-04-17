@@ -12,9 +12,39 @@ const (
 
 type BlendFunc func(src color.Color, dst color.Color) color.Color
 
-func blend_per_channel(src, dst color.Color, bf func(float64,float64)float64) color.Color {
-	s,d := color2rgbaf64(src), color2rgbaf64(dst)
-	return rgbaf64{bf(s.r,d.r), bf(s.g,d.g), bf(s.b,d.b), d.a}
+func blend_per_channel(src, dst color.Color, bf func(float64, float64) float64) color.Color {
+	s, d := color2rgbaf64(src), color2rgbaf64(dst)
+	return rgbaf64{bf(s.r, d.r), bf(s.g, d.g), bf(s.b, d.b), d.a}
+}
+
+// ADD
+func ADD(src color.Color, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, add)
+}
+func add(s, d float64) float64 {
+	if s+d > max {
+		return max
+	}
+	return s + d
+}
+
+// SUBSTRACT
+func SUBSTRACT(src color.Color, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, substract)
+}
+func substract(s, d float64) float64 {
+	if s-d < 0.0 {
+		return 0.0
+	}
+	return s - d
+}
+
+// DIVIDE
+func DIVIDE(src color.Color, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, divide)
+}
+func divide(s, d float64) float64 {
+	return s / d
 }
 
 // MULTIPLY

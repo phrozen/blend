@@ -49,6 +49,9 @@ The library uses ***float64*** internally for precision, math operations, and co
 
 At the moment it supports the following blending modes:
 
++ Add
++ Substract
++ Divide
 + Multiply
 + Screen
 + Overlay

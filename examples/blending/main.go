@@ -15,6 +15,9 @@ import (
 )
 
 var modes = map[string]blend.BlendFunc{
+	"add":          blend.ADD,
+	"substract":    blend.SUBSTRACT,
+	"divide":       blend.DIVIDE,
 	"multiply":     blend.MULTIPLY,
 	"screen":       blend.SCREEN,
 	"overlay":      blend.OVERLAY,
