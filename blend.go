@@ -14,7 +14,7 @@ type BlendFunc func(src color.Color, dst color.Color) color.Color
 
 func blend_per_channel(src, dst color.Color, bf func(float64,float64)float64) color.Color {
 	s,d := color2rgbaf64(src), color2rgbaf64(dst)
-	return rgbaf64{bf(s.r,d.r), bf(s.r,d.r), bf(s.r,d.r), d.a}
+	return rgbaf64{bf(s.r,d.r), bf(s.g,d.g), bf(s.b,d.b), d.a}
 }
 
 // MULTIPLY
