@@ -18,6 +18,7 @@ import "github.com/phrozen/blend"
 
 Use this convenience function:
 ```go
+// source is the top layer, dest is the bottom layer or image to be applied to.
 func BlendImage(source, dest image.Image, blend BlendFunc) (image.Image, error) {
   ...
 }
@@ -47,6 +48,7 @@ A **BlendFunc** is applied to each color (RGBA) of an image (although included b
 The library uses ***float64*** internally for precision, math operations, and conversions to the **'image'** interfaces. 
 
 At the moment it supports the following blending modes:
+
 + Multiply
 + Screen
 + Overlay
