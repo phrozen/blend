@@ -44,7 +44,7 @@ func DIVIDE(src color.Color, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, divide)
 }
 func divide(s, d float64) float64 {
-	return d / s
+	return s / d * max
 }
 
 // MULTIPLY
