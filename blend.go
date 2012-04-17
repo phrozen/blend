@@ -150,7 +150,11 @@ func hard_light(s, d float64) float64 {
 
 // VIVID LIGHT (check)
 func VIVID_LIGHT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, vivid_light)
+	s, d := color2rgbaf64(src), color2rgbaf64(dst)
+	if s.r+s.g+s.b < mid*3 {
+		return COLOR_BURN(src, dst)
+	}
+	return COLOR_DODGE(src, dst)
 }
 func vivid_light(s, d float64) float64 {
 	if s < mid {
