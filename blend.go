@@ -56,7 +56,7 @@ func soft_light(s, d float64) float64 {
 }
 
 // HARD LIGHT
-func HARDLIGHT(src color.Color, dst color.Color) color.Color {
+func HARD_LIGHT(src color.Color, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, hard_light)
 }
 func hard_light(s, d float64) float64 {
