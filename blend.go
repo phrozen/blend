@@ -59,7 +59,7 @@ type BlendFunc func(float64, float64) float64
 func Blend(src, dst color.Color, bf BlendFunc) color.Color {
 	s := colorTorgbaf64(src)
 	d := colorTorgbaf64(dst)
-	return rgbaf64{bf(s.r, d.r), bf(s.r, d.r), bf(s.r, d.r), d.a}
+	return rgbaf64{bf(s.r, d.r), bf(s.g, d.g), bf(s.b, d.b), d.a}
 }
 
 // Blend Functions
