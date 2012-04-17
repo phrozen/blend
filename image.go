@@ -33,6 +33,6 @@ func BlendImage(source, dest image.Image, mode int) (image.Image, error) {
 
 func getWidthAndHeight(img image.Image) (width, height int) {
   width = img.Bounds().Max.X - img.Bounds().Min.X
-  width = img.Bounds().Max.Y - img.Bounds().Min.Y
+  height = img.Bounds().Max.Y - img.Bounds().Min.Y
   return
 }
