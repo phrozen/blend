@@ -18,10 +18,10 @@ import "github.com/phrozen/blend"
 
 Use this convenience function:
 ```go
-// source is the top layer, dest is the bottom layer or image to be applied to.
 func BlendImage(source, dest image.Image, blend BlendFunc) (image.Image, error) {
   ...
 }
+// source is the top layer, dest is the bottom layer or image to be applied to.
 ```
 
 For example:
