@@ -35,7 +35,6 @@ var modes = map[string]blend.BlendFunc{
 	"hard_mix":     blend.HARD_MIX,
 }
 
-
 func LoadJPG(filename string) (image.Image, error) {
 	file, err := os.Open(filename)
 	if err != nil {
