@@ -13,8 +13,8 @@ const (
 	HARD_LIGHT
 	COLOR_DODGE
 	COLOR_BURN
-	LINEAR_COLOR_DODGE
-	LINEAR_COLOR_BURN
+	LINEAR_DODGE
+	LINEAR_BURN
 	DARKEN
 	LIGHTEN
 	DIFFERENCE
@@ -35,8 +35,6 @@ const (
 	mid = max / 2.0
 )
 
-type blendFunc func(float64, float64) float64
-
 type rgbaf64 struct {
 	r, g, b, a float64
 }
@@ -54,30 +52,28 @@ func colorTorgbaf64(c color.Color) rgbaf64 {
 	return rgbaf64{float64(r), float64(g), float64(b), float64(a)}
 }
 
-func BlendColor(source, dest color.Color, mode int) color.Color {
+func BlendMode(src, dst color.Color, mode int) color.Color {
 	switch mode {
 	case MULTIPLY:
-		return blend(source, dest, multiply)
+		return Blend(src, dst, multiply)
 	case SCREEN:
-		return blend(source, dest, screen)
+		return Blend(src, dst, screen)
 	case OVERLAY:
-		return blend(source, dest, overlay)
+		return Blend(src, dst, overlay)
 	case SOFT_LIGHT:
-		return blend(source, dest, soft_light)
+		return Blend(src, dst, soft_light)
 	case HARD_LIGHT:
-		return blend(source, dest, hard_light)
+		return Blend(src, dst, hard_light)
 	}
 	return rgbaf64{0.0, 0.0, 0.0, 0.0}
 }
 
-func blend(source, dest color.Color, bf blendFunc) (c rgbaf64) {
-	s := colorTorgbaf64(source)
-	d := colorTorgbaf64(dest)
-	c.r = bf(s.r, d.r)
-	c.g = bf(s.g, d.g)
-	c.b = bf(s.b, d.b)
-	c.a = s.a
-	return
+type BlendFunc func(float64, float64) float64
+
+func Blend(src, dst color.Color, bf BlendFunc) color.Color {
+	s := colorTorgbaf64(src)
+	d := colorTorgbaf64(dst)
+	return rgbaf64{bf(s.r, d.r), bf(s.r, d.r), bf(s.r, d.r), d.a}
 }
 
 // Blend Modes
@@ -108,4 +104,80 @@ func hard_light(s, d float64) float64 {
 		return d + (max-d)*((s-mid)/mid)
 	}
 	return d * s / mid
+}
+
+func color_dodge(s, d float64) float64 {
+	if s == max {
+		return s
+	}
+	return math.Min(max, (d * max / (max - s)))
+}
+
+func color_burn(s, d float64) float64 {
+	if s == 0.0 {
+		return s
+	}
+	return math.Max(0.0, max-((max-d)*max/s))
+}
+
+func linear_dodge(s, d float64) float64 {
+	return math.Min(s+d, max)
+}
+
+func linear_burn(s, d float64) float64 {
+	if (s + d) < max {
+		return 0.0
+	}
+	return s + d - max
+}
+
+func darken(s, d float64) float64 {
+	return math.Min(s, d)
+}
+
+func lighten(s, d float64) float64 {
+	return math.Max(s, d)
+}
+
+func difference(s, d float64) float64 {
+	return math.Abs(s - d)
+}
+
+func exclusion(s, d float64) float64 {
+	return s + d - s*d/mid
+}
+
+func reflex(s, d float64) float64 {
+	if s == max {
+		return s
+	}
+	return math.Min(max, (d * d / (max - s)))
+}
+
+func linear_light(s, d float64) float64 {
+	if s < mid {
+		return linear_burn(d, (2 * s))
+	}
+	return linear_dodge(d, (2 * (s - mid)))
+}
+
+func pin_light(s, d float64) float64 {
+	if s < mid {
+		return darken(d, (2 * s))
+	}
+	return lighten(d, (2 * (s - mid)))
+}
+
+func vivid_light(s, d float64) float64 {
+	if s < mid {
+		return color_burn(d, (2 * s))
+	}
+	return color_dodge(d, (2 * (s - mid)))
+}
+
+func hard_mix(s, d float64) float64 {
+	if vivid_light(s, d) < mid {
+		return 0.0
+	}
+	return max
 }

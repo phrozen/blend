@@ -24,7 +24,7 @@ func BlendImage(source, dest image.Image, mode int) (image.Image, error) {
 
   for x := 0; x < dwidth; x++ {
     for y := 0; y < dheight; y++ {
-      img.Set(x, y, BlendColor(source.At(x, y), dest.At(x, y), mode))
+      img.Set(x, y, BlendMode(source.At(x, y), dest.At(x, y), mode))
     }
   }
 
