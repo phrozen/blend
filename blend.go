@@ -7,7 +7,7 @@ import (
 
 const (
 	max = 65535.0 // equals to 0xFFFF uint16 max range of color.Color
-	mid = max / 2.0
+	mid = (max / 2.0) + 0.5
 )
 
 type BlendFunc func(src, dst color.Color) color.Color
