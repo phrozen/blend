@@ -8,12 +8,12 @@ Image processing library and rendering toolkit for Go. (WIP)
 This library is compatible with Go1.
 
 ```
-go get github.com/Phrozen/blend
+go get github.com/phrozen/blend
 ```
 
 ## Usage:
 ```
-import "github.com/Phrozen/blend"
+import "github.com/phrozen/blend"
 ```
 
 Use this convenience function:
