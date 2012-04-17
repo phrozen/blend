@@ -150,7 +150,7 @@ func hard_light(s, d float64) float64 {
 
 // VIVID LIGHT (check)
 func VIVID_LIGHT(src, dst color.Color) color.Color {
-	s, d := color2rgbaf64(src), color2rgbaf64(dst)
+	s := color2rgbaf64(src)
 	if s.r+s.g+s.b < mid*3 {
 		return COLOR_BURN(src, dst)
 	}
