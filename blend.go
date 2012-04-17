@@ -33,10 +33,10 @@ func SUBSTRACT(src color.Color, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, substract)
 }
 func substract(s, d float64) float64 {
-	if s-d < 0.0 {
+	if d-s < 0.0 {
 		return 0.0
 	}
-	return s - d
+	return d - s
 }
 
 // DIVIDE
@@ -44,7 +44,7 @@ func DIVIDE(src color.Color, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, divide)
 }
 func divide(s, d float64) float64 {
-	return s / d
+	return d / s
 }
 
 // MULTIPLY
