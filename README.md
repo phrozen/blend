@@ -34,13 +34,13 @@ if err != nil {
 // Save img or blend it again.
 ```
 
-Easily extensible as it uses the standard library interfaces from 'image' and 'image/color'.
+Easily extensible as it uses the standard library interfaces from **'image'** and **'image/color'**.
 
 ```go
-type BlendFunc func(float64, float64) float64
+type BlendFunc func()
 ```
 
-The library uses _float64_ for precision, math operations, and conversions to the 'image' interfaces. A __BlendFunc__ is applied to each channel (RGB) of an image (Alpha channel is not utilized atm).
+The library uses ***float64*** for precision, math operations, and conversions to the **'image'** interfaces. A **BlendFunc** is applied to each color (RGBA) of an image (although blend modes does not use the Alpha channel atm).
 
 Example:
 

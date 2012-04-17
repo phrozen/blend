@@ -4,7 +4,7 @@ import (
 	"image"
 )
 
-func BlendImage(source, dest image.Image, mode BlendFunc) (image.Image, error) {
+func BlendImage(source, dest image.Image, blend BlendFunc) (image.Image, error) {
 
 	if source.ColorModel() != dest.ColorModel() {
 		return nil, BlendError{"Source and destination images have different color models."}
@@ -24,7 +24,7 @@ func BlendImage(source, dest image.Image, mode BlendFunc) (image.Image, error) {
 
 	for x := 0; x < dwidth; x++ {
 		for y := 0; y < dheight; y++ {
-			img.Set(x, y, Blend(source.At(x, y), dest.At(x, y), mode))
+			img.Set(x, y, blend(source.At(x, y), dest.At(x, y)))
 		}
 	}
 
