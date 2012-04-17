@@ -5,29 +5,31 @@ import (
 	"math"
 )
 
-const (
-	MULTIPLY = iota
-	SCREEN
-	OVERLAY
-	SOFT_LIGHT
-	HARD_LIGHT
-	COLOR_DODGE
-	COLOR_BURN
-	LINEAR_DODGE
-	LINEAR_BURN
-	DARKEN
-	LIGHTEN
-	DIFFERENCE
-	EXCLUSION
-	REFLEX
-	LINEAR_LIGHT
-	PIN_LIGHT
-	VIVID_LIGHT
-	HARD_MIX
+var (
+	MULTIPLY     = multiply
+	SCREEN       = screen
+	OVERLAY      = overlay
+	SOFT_LIGHT   = soft_light
+	HARD_LIGHT   = hard_light
+	COLOR_DODGE  = color_dodge
+	COLOR_BURN   = color_burn
+	LINEAR_DODGE = linear_dodge
+	LINEAR_BURN  = linear_burn
+	DARKEN       = darken
+	LIGHTEN      = lighten
+	DIFFERENCE   = difference
+	EXCLUSION    = exclusion
+	REFLEX       = reflex
+	LINEAR_LIGHT = linear_light
+	PIN_LIGHT    = pin_light
+	VIVID_LIGHT  = vivid_light
+	HARD_MIX     = hard_mix
 	// Blending modes in HSL color model.
-	HUE
-	COLOR
-	LUMINOSITY
+	/*
+		HUE
+		COLOR
+		LUMINOSITY
+	*/
 )
 
 const (
@@ -52,22 +54,49 @@ func colorTorgbaf64(c color.Color) rgbaf64 {
 	return rgbaf64{float64(r), float64(g), float64(b), float64(a)}
 }
 
-func BlendMode(src, dst color.Color, mode int) color.Color {
+/*
+func BlendMode(src, dst color.Color, mode int) (color.Color, error) {
 	switch mode {
 	case MULTIPLY:
-		return Blend(src, dst, multiply)
+		return Blend(src, dst, multiply), nil
 	case SCREEN:
-		return Blend(src, dst, screen)
+		return Blend(src, dst, screen), nil
 	case OVERLAY:
-		return Blend(src, dst, overlay)
+		return Blend(src, dst, overlay), nil
 	case SOFT_LIGHT:
-		return Blend(src, dst, soft_light)
+		return Blend(src, dst, soft_light), nil
 	case HARD_LIGHT:
-		return Blend(src, dst, hard_light)
+		return Blend(src, dst, hard_light), nil
+	case COLOR_DODGE:
+		return Blend(src, dst, color_dodge), nil
+	case COLOR_BURN:
+		return Blend(src, dst, color_burn), nil
+	case LINEAR_DODGE:
+		return Blend(src, dst, linear_dodge), nil
+	case LINEAR_BURN:
+		return Blend(src, dst, linear_burn), nil
+	case DARKEN:
+		return Blend(src, dst, darken), nil
+	case LIGHTEN:
+		return Blend(src, dst, lighten), nil
+	case DIFFERENCE:
+		return Blend(src, dst, difference), nil
+	case EXCLUSION:
+		return Blend(src, dst, exclusion), nil
+	case REFLEX:
+		return Blend(src, dst, reflex), nil
+	case LINEAR_LIGHT:
+		return Blend(src, dst, linear_light), nil
+	case PIN_LIGHT:
+		return Blend(src, dst, pin_light), nil
+	case VIVID_LIGHT:
+		return Blend(src, dst, vivid_light), nil
+	case HARD_MIX:
+		return Blend(src, dst, hard_mix), nil
 	}
-	return rgbaf64{0.0, 0.0, 0.0, 0.0}
+	return nil, BlendError{"Blending mode not recognized."}
 }
-
+*/
 type BlendFunc func(float64, float64) float64
 
 func Blend(src, dst color.Color, bf BlendFunc) color.Color {
