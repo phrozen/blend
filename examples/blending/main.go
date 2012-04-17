@@ -1,6 +1,6 @@
 /*
 	Example of blending modes using blend Go library.
-	https://github.com/Phrozen/blend
+	https://github.com/phrozen/blend
 	by Guillermo Estrada
 */
 
@@ -8,7 +8,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Phrozen/blend"
+	"github.com/phrozen/blend"
 	"image"
 	"image/png"
 	"os"
