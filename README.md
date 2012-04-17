@@ -5,16 +5,19 @@ Image processing library and rendering toolkit for Go.
 
 This library is compatible with Go1.
 
-To install:
+### Installation:
 
 ```
 go get github.com/Phrozen/blend
 ```
-To use:
 
+### Usage:
 ```
 import "github.com/Phrozen/blend"
 ```
+
+Check the examples directory for a usage on how to use the blending modes.
+
 At the moment it supports the following blending modes:
 
 + Multiply
@@ -36,4 +39,4 @@ At the moment it supports the following blending modes:
 + Vivid Light
 + Hard Mix
 
-### More featurs to come.
+### More features to come.
