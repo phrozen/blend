@@ -14,7 +14,6 @@
 //
 // See documentation for more details:
 // http://github.com/phrozen/blend
-
 package blend
 
 import (
