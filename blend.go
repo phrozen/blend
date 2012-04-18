@@ -2,7 +2,8 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// Package image implements blending mode functions bewteen images.
+// Package blend implements blending mode functions bewteen images,
+// and some utility functions for image processing.
 //
 // The fundamental part of the library is the type BlendFunc,
 // the function is applied to each pixel where the top layer (src)
