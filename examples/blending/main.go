@@ -7,8 +7,8 @@
 package main
 
 import (
-	"blend"
 	"fmt"
+	"github.com/phrozenblend"
 	"image"
 	"image/jpeg"
 	"os"
