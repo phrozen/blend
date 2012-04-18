@@ -27,13 +27,19 @@ func BlendImage(source, dest image.Image, blend BlendFunc) (image.Image, error) 
 For example:
 
 ```go
-// Read 2 images 'source' and 'destination'
-img, err := BlendImage(source, destination, blend.COLOR_BURN)
+import "github.com/phrozen/blend"
+
+// Read two images 'source' and 'destination'
+
+// Blend source (top layer) into destination (bottom layer)
+// using Color Burn blending mode.
+img, err := blend.Blend(source, destination, blend.COLOR_BURN)
 if err != nil {
   panic(err)
 }
+
 // Save img or blend it again.
-img, err := BlendImage(source, img, blend.COLOR_BURN)
+img, err := blend.Blend(source, img, blend.COLOR_BURN)
 ```
 
 Can be easily extended as it uses the standard library interfaces from **'image'** and **'image/color'**.

@@ -4,13 +4,13 @@
 
 // Package image implements blending mode functions bewteen images.
 //
-// The fundamental part of the library id the type BlendFunc,
+// The fundamental part of the library is the type BlendFunc,
 // the function is applied to each pixel where the top layer (src)
 // overlaps the bottom layer (dst) of both given 'image' interfaces.
 //
-// This library provides a lot of Blend Functions to be used either
-// as 'mode' parameter to the Blend() primary function, or to use 
-// individually providing two 'color' interfaces.
+// This library provides many of the widely used Blend Functions 
+// to be used either as 'mode' parameter to the Blend() primary
+// function, or to use individually providing two 'color' interfaces.
 //
 // See documentation for more details:
 // http://github.com/phrozen/blend
@@ -29,6 +29,37 @@ import (
 const (
 	max = 65535.0 // equals to 0xFFFF uint16 max range of color.Color
 	mid = max / 2.0
+)
+
+var (
+	DARKEN        = darken
+	MULTIPLY      = multiply
+	COLOR_BURN    = color_burn
+	LINEAR_BURN   = linear_burn
+	DARKER_COLOR  = darker_color
+	LIGHTEN       = lighten
+	SCREEN        = screen
+	COLOR_DODGE   = color_dodge
+	LINEAR_DODGE  = linear_dodge
+	LIGHTER_COLOR = lighter_color
+	OVERLAY       = overlay
+	SOFT_LIGHT    = soft_light
+	HARD_LIGHT    = hard_light
+	VIVID_LIGHT   = vivid_light
+	LINEAR_LIGHT  = linear_light
+	PIN_LIGHT     = pin_light
+	HARD_MIX      = hard_mix
+	DIFFERENCE    = difference
+	EXCLUSION     = exclusion
+	SUBSTRACT     = substract
+	DIVIDE        = divide
+	HUE           = hue
+	SATURATION    = saturation
+	COLOR         = color_
+	LUMINOSITY    = luminosity
+	ADD           = add
+	REFLEX        = reflex
+	PHOENIX       = phoenix
 )
 
 // Blends src image (top layer) into dst image (bottom layer) using
@@ -77,26 +108,26 @@ func blend_per_channel(src, dst color.Color, bf func(float64, float64) float64) 
 /*-------------------------------------------------------*/
 
 // DARKEN
-func DARKEN(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, darken)
+func darken(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, darken_per_ch)
 }
-func darken(s, d float64) float64 {
+func darken_per_ch(s, d float64) float64 {
 	return math.Min(s, d)
 }
 
 // MULTIPLY
-func MULTIPLY(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, multiply)
+func multiply(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, multiply_per_ch)
 }
-func multiply(s, d float64) float64 {
+func multiply_per_ch(s, d float64) float64 {
 	return s * d / max
 }
 
 // COLOR BURN
-func COLOR_BURN(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, color_burn)
+func color_burn(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, color_burn_per_ch)
 }
-func color_burn(s, d float64) float64 {
+func color_burn_per_ch(s, d float64) float64 {
 	if s == 0.0 {
 		return s
 	}
@@ -104,10 +135,10 @@ func color_burn(s, d float64) float64 {
 }
 
 // LINEAR BURN
-func LINEAR_BURN(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, linear_burn)
+func linear_burn(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, linear_burn_per_ch)
 }
-func linear_burn(s, d float64) float64 {
+func linear_burn_per_ch(s, d float64) float64 {
 	if (s + d) < max {
 		return 0.0
 	}
@@ -115,7 +146,7 @@ func linear_burn(s, d float64) float64 {
 }
 
 // DARKER COLOR
-func DARKER_COLOR(src, dst color.Color) color.Color {
+func darker_color(src, dst color.Color) color.Color {
 	s, d := color2rgbaf64(src), color2rgbaf64(dst)
 	if s.r+s.g+s.b > d.r+d.g+d.b {
 		return dst
@@ -126,26 +157,26 @@ func DARKER_COLOR(src, dst color.Color) color.Color {
 /*-------------------------------------------------------*/
 
 // LIGHTEN
-func LIGHTEN(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, lighten)
+func lighten(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, lighten_per_ch)
 }
-func lighten(s, d float64) float64 {
+func lighten_per_ch(s, d float64) float64 {
 	return math.Max(s, d)
 }
 
 // SCREEN
-func SCREEN(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, screen)
+func screen(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, screen_per_ch)
 }
-func screen(s, d float64) float64 {
+func screen_per_ch(s, d float64) float64 {
 	return s + d - s*d/max
 }
 
 // COLOR DODGE
-func COLOR_DODGE(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, color_dodge)
+func color_dodge(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, color_dodge_per_ch)
 }
-func color_dodge(s, d float64) float64 {
+func color_dodge_per_ch(s, d float64) float64 {
 	if s == max {
 		return s
 	}
@@ -153,15 +184,15 @@ func color_dodge(s, d float64) float64 {
 }
 
 // LINEAR DODGE
-func LINEAR_DODGE(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, linear_dodge)
+func linear_dodge(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, linear_dodge_per_ch)
 }
-func linear_dodge(s, d float64) float64 {
+func linear_dodge_per_ch(s, d float64) float64 {
 	return math.Min(s+d, max)
 }
 
 // LIGHTER COLOR
-func LIGHTER_COLOR(src, dst color.Color) color.Color {
+func lighter_color(src, dst color.Color) color.Color {
 	s, d := color2rgbaf64(src), color2rgbaf64(dst)
 	if s.r+s.g+s.b > d.r+d.g+d.b {
 		return src
@@ -172,10 +203,10 @@ func LIGHTER_COLOR(src, dst color.Color) color.Color {
 /*-------------------------------------------------------*/
 
 // OVERLAY
-func OVERLAY(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, overlay)
+func overlay(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, overlay_per_ch)
 }
-func overlay(s, d float64) float64 {
+func overlay_per_ch(s, d float64) float64 {
 	if d < mid {
 		return 2 * s * d / max
 	}
@@ -183,18 +214,18 @@ func overlay(s, d float64) float64 {
 }
 
 // SOFT LIGHT
-func SOFT_LIGHT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, soft_light)
+func soft_light(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, soft_light_per_ch)
 }
-func soft_light(s, d float64) float64 {
+func soft_light_per_ch(s, d float64) float64 {
 	return (d / max) * (d + (2*s/max)*(max-d))
 }
 
 // HARD LIGHT
-func HARD_LIGHT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, hard_light)
+func hard_light(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, hard_light_per_ch)
 }
-func hard_light(s, d float64) float64 {
+func hard_light_per_ch(s, d float64) float64 {
 	if s > mid {
 		return d + (max-d)*((s-mid)/mid)
 	}
@@ -202,44 +233,44 @@ func hard_light(s, d float64) float64 {
 }
 
 // VIVID LIGHT (check)
-func VIVID_LIGHT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, vivid_light)
+func vivid_light(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, vivid_light_per_ch)
 }
-func vivid_light(s, d float64) float64 {
+func vivid_light_per_ch(s, d float64) float64 {
 	if s < mid {
-		return color_burn(d, (2 * s))
+		return color_burn_per_ch(d, (2 * s))
 	}
-	return color_dodge(d, (2 * (s - mid)))
+	return color_dodge_per_ch(d, (2 * (s - mid)))
 }
 
 // LINEAR LIGHT
-func LINEAR_LIGHT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, linear_light)
+func linear_light(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, linear_light_per_ch)
 }
-func linear_light(s, d float64) float64 {
+func linear_light_per_ch(s, d float64) float64 {
 	if s < mid {
-		return linear_burn(d, (2 * s))
+		return linear_burn_per_ch(d, (2 * s))
 	}
-	return linear_dodge(d, (2 * (s - mid)))
+	return linear_dodge_per_ch(d, (2 * (s - mid)))
 }
 
 // PIN LIGHT
-func PIN_LIGHT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, pin_light)
+func pin_light(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, pin_light_per_ch)
 }
-func pin_light(s, d float64) float64 {
+func pin_light_per_ch(s, d float64) float64 {
 	if s < mid {
-		return darken(d, (2 * s))
+		return darken_per_ch(d, (2 * s))
 	}
-	return lighten(d, (2 * (s - mid)))
+	return lighten_per_ch(d, (2 * (s - mid)))
 }
 
 // HARD MIX (check)
-func HARD_MIX(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, hard_mix)
+func hard_mix(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, hard_mix_per_ch)
 }
-func hard_mix(s, d float64) float64 {
-	if vivid_light(s, d) < mid {
+func hard_mix_per_ch(s, d float64) float64 {
+	if vivid_light_per_ch(s, d) < mid {
 		return 0.0
 	}
 	return max
@@ -248,26 +279,26 @@ func hard_mix(s, d float64) float64 {
 /*-------------------------------------------------------*/
 
 // DIFFERENCE
-func DIFFERENCE(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, difference)
+func difference(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, difference_per_ch)
 }
-func difference(s, d float64) float64 {
+func difference_per_ch(s, d float64) float64 {
 	return math.Abs(s - d)
 }
 
 // EXCLUSION
-func EXCLUSION(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, exclusion)
+func exclusion(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, exclusion_per_ch)
 }
-func exclusion(s, d float64) float64 {
+func exclusion_per_ch(s, d float64) float64 {
 	return s + d - s*d/mid
 }
 
 // SUBSTRACT
-func SUBSTRACT(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, substract)
+func substract(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, substract_per_ch)
 }
-func substract(s, d float64) float64 {
+func substract_per_ch(s, d float64) float64 {
 	if d-s < 0.0 {
 		return 0.0
 	}
@@ -275,10 +306,10 @@ func substract(s, d float64) float64 {
 }
 
 // DIVIDE
-func DIVIDE(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, divide)
+func divide(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, divide_per_ch)
 }
-func divide(s, d float64) float64 {
+func divide_per_ch(s, d float64) float64 {
 	return (d*max)/s + 1.0
 }
 
@@ -286,7 +317,7 @@ func divide(s, d float64) float64 {
 /*-------------------------------------------------------*/
 
 // HUE
-func HUE(src, dst color.Color) color.Color {
+func hue(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
 	if s.s == 0.0 {
 		return dst
@@ -296,21 +327,21 @@ func HUE(src, dst color.Color) color.Color {
 }
 
 // SATURATION
-func SATURATION(src, dst color.Color) color.Color {
+func saturation(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
 	d := rgb2hsl(dst)
 	return hsl2rgb(d.h, s.s, d.l)
 }
 
-// COLOR
-func COLOR(src, dst color.Color) color.Color {
+// COLOR "added _ to avoid namespace conflict with 'color' package"
+func color_(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
 	d := rgb2hsl(dst)
 	return hsl2rgb(s.h, s.s, d.l)
 }
 
 // LUMINOSITY
-func LUMINOSITY(src, dst color.Color) color.Color {
+func luminosity(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
 	d := rgb2hsl(dst)
 	return hsl2rgb(d.h, d.s, s.l)
@@ -321,10 +352,10 @@ func LUMINOSITY(src, dst color.Color) color.Color {
 /*-------------------------------------------------------*/
 
 // ADD
-func ADD(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, add)
+func add(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, add_per_ch)
 }
-func add(s, d float64) float64 {
+func add_per_ch(s, d float64) float64 {
 	if s+d > max {
 		return max
 	}
@@ -332,10 +363,10 @@ func add(s, d float64) float64 {
 }
 
 // REFLEX (a.k.a GLOW)
-func REFLEX(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, reflex)
+func reflex(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, reflex_per_ch)
 }
-func reflex(s, d float64) float64 {
+func reflex_per_ch(s, d float64) float64 {
 	if s == max {
 		return s
 	}
@@ -343,9 +374,9 @@ func reflex(s, d float64) float64 {
 }
 
 // PHOENIX
-func PHOENIX(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, phoenix)
+func phoenix(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, phoenix_per_ch)
 }
-func phoenix(s, d float64) float64 {
+func phoenix_per_ch(s, d float64) float64 {
 	return math.Min(s, d) - math.Max(s, d) + max
 }
