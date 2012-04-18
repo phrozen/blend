@@ -90,6 +90,7 @@ The library uses ***float64*** internally for precision, math operations, and co
 
 ----
 **Notes:**
+
 + *Add, Reflex, and Phoenix modes are not in PSD.*
 + *Vivid Light produces different results than PSD, affects Hard Mix*
 + *Saturation, Color, and Luminosity modes produce different results than PSD, but the results are either identical to The GIMP or pretty similar.*
