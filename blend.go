@@ -8,13 +8,13 @@
 // the function is applied to each pixel where the top layer (src)
 // overlaps the bottom layer (dst) of both given 'image' interfaces.
 //
-// This library provides many of the widely used Blend Functions 
+// This library provides many of the widely used blending functions 
 // to be used either as 'mode' parameter to the Blend() primary
-// function, or to use individually providing two 'color' interfaces.
+// function, or to be used individually providing two 'color' interfaces.
 // You can implement your own blending modes and pass them into the 
 // Blend() function.
 //
-// This is the list of the currently implemented Blend Functions:
+// This is the list of the currently implemented blending modes:
 //
 // Add, Color, Color Burn, Color Dodge, Darken, Darker Color, Difference, 
 // Divide, Exclusion, Hard Light, Hard Mix, Hue, Lighten, Lighter Color, 
