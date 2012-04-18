@@ -1,14 +1,71 @@
+// Copyright (c) 2012 Guillermo Estrada. All rights reserved.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
+// Package image implements blending mode functions bewteen images.
+//
+// The fundamental part of the library id the type BlendFunc,
+// the function is applied to each pixel where the top layer (src)
+// overlaps the bottom layer (dst) of both given 'image' interfaces.
+//
+// This library provides a lot of Blend Functions to be used either
+// as 'mode' parameter to the Blend() primary function, or to use 
+// individually providing two 'color' interfaces.
+//
+// See documentation for more details:
+// http://github.com/phrozen/blend
+
 package blend
 
 import (
+	"image"
 	"image/color"
 	"math"
 )
 
+// Constants of max and mid values for uint16 for internal use.
+// This can be changed to make the algorithms use uint8 instead, 
+// but they are kept this way to provide more acurate calculations
+// and to support all of the color modes in the 'image' package.
 const (
 	max = 65535.0 // equals to 0xFFFF uint16 max range of color.Color
 	mid = max / 2.0
 )
+
+// Blends src image (top layer) into dst image (bottom layer) using
+// the BlendFunc provided by mode. BlendFunc is applied to each pixel
+// where the src image overlaps the dst image and returns the resulting
+// image or an error in case of failure.
+func Blend(src, dst image.Image, mode BlendFunc) (image.Image, error) {
+
+	// Color model check. Needs more testing to see if there is no problem 
+	// using the interfaces, to blend images with different color models.
+	if src.ColorModel() != dst.ColorModel() {
+		return nil, BlendError{"Top layer(src) and bot layer(dst) have different color models."}
+	}
+
+	// Boundary check to see if we can blend all pixels in the top layer
+	// into the bottom layer. Later and intersection will be used.
+	if !src.Bounds().In(dst.Bounds()) {
+		return nil, BlendError{"Top layer(src) does not fit into bottom layer(dst)."}
+	}
+
+	// Create a new RGBA or RGBA64 image to return the values.
+	img := image.NewRGBA(dst.Bounds())
+
+	for x := 0; x < dst.Bounds().Dx(); x++ {
+		for y := 0; y < dst.Bounds().Dy(); y++ {
+			// If src is inside dst, we blend both pixels
+			if p := image.Pt(x, y); p.In(src.Bounds()) {
+				img.Set(x, y, mode(src.At(x, y), dst.At(x, y)))
+			} else {
+				// else we copy dst pixel.
+				img.Set(x, y, dst.At(x, y))
+			}
+		}
+	}
+	return img, nil
+}
 
 type BlendFunc func(src, dst color.Color) color.Color
 
@@ -17,7 +74,7 @@ func blend_per_channel(src, dst color.Color, bf func(float64, float64) float64) 
 	return rgbaf64{bf(s.r, d.r), bf(s.g, d.g), bf(s.b, d.b), d.a}
 }
 
-// BLENDING MODES IN PHOTOSHOP ORDER
+// Blending modes supported by Photoshop in order.
 /*-------------------------------------------------------*/
 
 // DARKEN
@@ -226,41 +283,7 @@ func divide(s, d float64) float64 {
 	return (d*max)/s + 1.0
 }
 
-/*-------------------------------------------------------*/
-
-/*-------------------------------------------------------*/
-// THIS MODES ARE NOT IN PHOTOSHOP
-
-// ADD
-func ADD(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, add)
-}
-func add(s, d float64) float64 {
-	if s+d > max {
-		return max
-	}
-	return s + d
-}
-
-// REFLEX (a.k.a GLOW)
-func REFLEX(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, reflex)
-}
-func reflex(s, d float64) float64 {
-	if s == max {
-		return s
-	}
-	return math.Min(max, (d * d / (max - s)))
-}
-
-// PHOENIX
-func PHOENIX(src, dst color.Color) color.Color {
-	return blend_per_channel(src, dst, phoenix)
-}
-func phoenix(s, d float64) float64 {
-	return math.Min(s, d) - math.Max(s,d) + max
-}
-
+// Blending modes that use HSL color model transformations.
 /*-------------------------------------------------------*/
 
 // HUE
@@ -294,4 +317,36 @@ func LUMINOSITY(src, dst color.Color) color.Color {
 	return hsl2rgb(d.h, d.s, s.l)
 }
 
+// This blending modes are not implemented in Photoshop
+// or GIMP at the moment, but produced their desired results.
 /*-------------------------------------------------------*/
+
+// ADD
+func ADD(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, add)
+}
+func add(s, d float64) float64 {
+	if s+d > max {
+		return max
+	}
+	return s + d
+}
+
+// REFLEX (a.k.a GLOW)
+func REFLEX(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, reflex)
+}
+func reflex(s, d float64) float64 {
+	if s == max {
+		return s
+	}
+	return math.Min(max, (d * d / (max - s)))
+}
+
+// PHOENIX
+func PHOENIX(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, phoenix)
+}
+func phoenix(s, d float64) float64 {
+	return math.Min(s, d) - math.Max(s, d) + max
+}

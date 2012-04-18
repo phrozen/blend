@@ -93,13 +93,13 @@ func main() {
 
 	fmt.Println("This program tests all the color blending modes in the library.")
 
-	for key, value := range modes {
-		fmt.Println("Blending Mode: ", key)
-		img, err = blend.BlendImage(src, dst, value)
+	for name, mode := range modes {
+		fmt.Println("Blending Mode: ", name)
+		img, err = blend.Blend(src, dst, mode)
 		if err != nil {
 			panic(err)
 		}
-		err = SaveJPG(key, img)
+		err = SaveJPG(name, img)
 		if err != nil {
 			panic(err)
 		}
