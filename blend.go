@@ -11,8 +11,18 @@
 // This library provides many of the widely used Blend Functions 
 // to be used either as 'mode' parameter to the Blend() primary
 // function, or to use individually providing two 'color' interfaces.
+// You can implement your own blending modes and pass them into the 
+// Blend() function.
 //
-// See documentation for more details:
+// This is the list of the currently implemented Blend Functions:
+//
+// Add, Color, Color Burn, Color Dodge, Darken, Darker Color, Difference, 
+// Divide, Exclusion, Hard Light, Hard Mix, Hue, Lighten, Lighter Color, 
+// Linear Burn, Linear Dodge, Linear Light, Luminosity, Multiply, Overlay, 
+// Phoenix, Pin Light, Reflex, Saturation, Screen, Soft Light, Substract, 
+// Vivid Light.
+//
+// Check github for more details:
 // http://github.com/phrozen/blend
 package blend
 
@@ -32,34 +42,34 @@ const (
 )
 
 var (
-	DARKEN        BlendFunc
-	MULTIPLY      BlendFunc
-	COLOR_BURN    BlendFunc
-	LINEAR_BURN   BlendFunc
-	DARKER_COLOR  BlendFunc
-	LIGHTEN       BlendFunc
-	SCREEN        BlendFunc
-	COLOR_DODGE   BlendFunc
-	LINEAR_DODGE  BlendFunc
-	LIGHTER_COLOR BlendFunc
-	OVERLAY       BlendFunc
-	SOFT_LIGHT    BlendFunc
-	HARD_LIGHT    BlendFunc
-	VIVID_LIGHT   BlendFunc
-	LINEAR_LIGHT  BlendFunc
-	PIN_LIGHT     BlendFunc
-	HARD_MIX      BlendFunc
-	DIFFERENCE    BlendFunc
-	EXCLUSION     BlendFunc
-	SUBSTRACT     BlendFunc
-	DIVIDE        BlendFunc
-	HUE           BlendFunc
-	SATURATION    BlendFunc
-	COLOR         BlendFunc
-	LUMINOSITY    BlendFunc
 	ADD           BlendFunc
-	REFLEX        BlendFunc
+	COLOR         BlendFunc
+	COLOR_BURN    BlendFunc
+	COLOR_DODGE   BlendFunc
+	DARKEN        BlendFunc
+	DARKER_COLOR  BlendFunc
+	DIFFERENCE    BlendFunc
+	DIVIDE        BlendFunc
+	EXCLUSION     BlendFunc
+	HARD_LIGHT    BlendFunc
+	HARD_MIX      BlendFunc
+	HUE           BlendFunc
+	LIGHTEN       BlendFunc
+	LIGHTER_COLOR BlendFunc
+	LINEAR_BURN   BlendFunc
+	LINEAR_DODGE  BlendFunc
+	LINEAR_LIGHT  BlendFunc
+	LUMINOSITY    BlendFunc
+	MULTIPLY      BlendFunc
+	OVERLAY       BlendFunc
 	PHOENIX       BlendFunc
+	PIN_LIGHT     BlendFunc
+	REFLEX        BlendFunc
+	SATURATION    BlendFunc
+	SCREEN        BlendFunc
+	SOFT_LIGHT    BlendFunc
+	SUBSTRACT     BlendFunc
+	VIVID_LIGHT   BlendFunc
 )
 
 // Blends src image (top layer) into dst image (bottom layer) using
