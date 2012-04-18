@@ -32,34 +32,34 @@ const (
 )
 
 var (
-	DARKEN        = darken
-	MULTIPLY      = multiply
-	COLOR_BURN    = color_burn
-	LINEAR_BURN   = linear_burn
-	DARKER_COLOR  = darker_color
-	LIGHTEN       = lighten
-	SCREEN        = screen
-	COLOR_DODGE   = color_dodge
-	LINEAR_DODGE  = linear_dodge
-	LIGHTER_COLOR = lighter_color
-	OVERLAY       = overlay
-	SOFT_LIGHT    = soft_light
-	HARD_LIGHT    = hard_light
-	VIVID_LIGHT   = vivid_light
-	LINEAR_LIGHT  = linear_light
-	PIN_LIGHT     = pin_light
-	HARD_MIX      = hard_mix
-	DIFFERENCE    = difference
-	EXCLUSION     = exclusion
-	SUBSTRACT     = substract
-	DIVIDE        = divide
-	HUE           = hue
-	SATURATION    = saturation
-	COLOR         = color_
-	LUMINOSITY    = luminosity
-	ADD           = add
-	REFLEX        = reflex
-	PHOENIX       = phoenix
+	DARKEN        BlendFunc
+	MULTIPLY      BlendFunc
+	COLOR_BURN    BlendFunc
+	LINEAR_BURN   BlendFunc
+	DARKER_COLOR  BlendFunc
+	LIGHTEN       BlendFunc
+	SCREEN        BlendFunc
+	COLOR_DODGE   BlendFunc
+	LINEAR_DODGE  BlendFunc
+	LIGHTER_COLOR BlendFunc
+	OVERLAY       BlendFunc
+	SOFT_LIGHT    BlendFunc
+	HARD_LIGHT    BlendFunc
+	VIVID_LIGHT   BlendFunc
+	LINEAR_LIGHT  BlendFunc
+	PIN_LIGHT     BlendFunc
+	HARD_MIX      BlendFunc
+	DIFFERENCE    BlendFunc
+	EXCLUSION     BlendFunc
+	SUBSTRACT     BlendFunc
+	DIVIDE        BlendFunc
+	HUE           BlendFunc
+	SATURATION    BlendFunc
+	COLOR         BlendFunc
+	LUMINOSITY    BlendFunc
+	ADD           BlendFunc
+	REFLEX        BlendFunc
+	PHOENIX       BlendFunc
 )
 
 // Blends src image (top layer) into dst image (bottom layer) using
@@ -379,4 +379,36 @@ func phoenix(src, dst color.Color) color.Color {
 }
 func phoenix_per_ch(s, d float64) float64 {
 	return math.Min(s, d) - math.Max(s, d) + max
+}
+
+// Init function maps the blendingmode functions.
+func init() {
+	DARKEN = darken
+	MULTIPLY = multiply
+	COLOR_BURN = color_burn
+	LINEAR_BURN = linear_burn
+	DARKER_COLOR = darker_color
+	LIGHTEN = lighten
+	SCREEN = screen
+	COLOR_DODGE = color_dodge
+	LINEAR_DODGE = linear_dodge
+	LIGHTER_COLOR = lighter_color
+	OVERLAY = overlay
+	SOFT_LIGHT = soft_light
+	HARD_LIGHT = hard_light
+	VIVID_LIGHT = vivid_light
+	LINEAR_LIGHT = linear_light
+	PIN_LIGHT = pin_light
+	HARD_MIX = hard_mix
+	DIFFERENCE = difference
+	EXCLUSION = exclusion
+	SUBSTRACT = substract
+	DIVIDE = divide
+	HUE = hue
+	SATURATION = saturation
+	COLOR = color_
+	LUMINOSITY = luminosity
+	ADD = add
+	REFLEX = reflex
+	PHOENIX = phoenix
 }
