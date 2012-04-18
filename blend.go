@@ -242,7 +242,7 @@ func add(s, d float64) float64 {
 	return s + d
 }
 
-// REFLEX
+// REFLEX (a.k.a GLOW)
 func REFLEX(src, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, reflex)
 }
@@ -253,23 +253,34 @@ func reflex(s, d float64) float64 {
 	return math.Min(max, (d * d / (max - s)))
 }
 
+// PHOENIX
+func PHOENIX(src, dst color.Color) color.Color {
+	return blend_per_channel(src, dst, phoenix)
+}
+func phoenix(s, d float64) float64 {
+	return math.Min(s, d) - math.Max(s,d) + max
+}
+
 /*-------------------------------------------------------*/
 
 // HUE
 func HUE(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
+	if s.s == 0.0 {
+		return dst
+	}
 	d := rgb2hsl(dst)
 	return hsl2rgb(s.h, d.s, d.l)
 }
 
-// SATURATION (check)
+// SATURATION
 func SATURATION(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
 	d := rgb2hsl(dst)
 	return hsl2rgb(d.h, s.s, d.l)
 }
 
-// COLOR (check)
+// COLOR
 func COLOR(src, dst color.Color) color.Color {
 	s := rgb2hsl(src)
 	d := rgb2hsl(dst)

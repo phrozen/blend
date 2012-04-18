@@ -47,33 +47,52 @@ A **BlendFunc** is applied to each color (RGBA) of an image (although included b
 
 The library uses ***float64*** internally for precision, math operations, and conversions to the **'image'** interfaces. 
 
-At the moment it supports the following blending modes:
+#### At the moment it supports the following blending modes:
 
-+ Add
-+ Substract
-+ Divide
++ Darken
 + Multiply
++ Color Burn
++ Linear Burn
++ Darker Color
+
+----
++ Lighten
 + Screen
++ Color Dodge
++ Linear Dodge
++ Lighter Color
+
+----
 + Overlay
 + Soft Light
 + Hard Light
-+ Color Dodge
-+ Color Burn
-+ Linear Dodge
-+ Linear Burn
-+ Darken
-+ Lighten
-+ Difference
-+ Exclusion
-+ Reflex
++ Vivid Light
 + Linear Light
 + Pin Light
-+ Vivid Light *(issues)*
-+ Hard Mix *(issues)*
++ Hard Mix
+
+----
++ Difference
++ Exclusion
++ Substract
++ Divide
+
+----
 + Hue
-+ Saturation *(issues)*
-+ Color *(issues)*
-+ Luminosity *(issues)*
++ Saturation
++ Color
++ Luminosity
+
+----
++ Add
++ Reflex
++ Phoenix
+
+----
+**Notes:**
++ *Add, Reflex, and Phoenix modes are not in PSD.*
++ *Vivid Light produces different results than PSD, affects Hard Mix*
++ *Saturation, Color, and Luminosity modes produce different results than PSD, but the results are either identical to The GIMP or pretty similar.*
 
 Check the examples directory for more on blending modes.
 

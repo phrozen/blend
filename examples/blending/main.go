@@ -38,6 +38,7 @@ var modes = map[string]blend.BlendFunc{
 	"hard_mix":      blend.HARD_MIX,
 	"darker_color":  blend.DARKER_COLOR,
 	"lighter_color": blend.LIGHTER_COLOR,
+	"phoenix":       blend.PHOENIX,
 	"hue":           blend.HUE,
 	"saturation":    blend.SATURATION,
 	"color":         blend.COLOR,
@@ -92,7 +93,6 @@ func main() {
 
 	fmt.Println("This program tests all the color blending modes in the library.")
 
-	// Testing Blending Modes with source1.png
 	for key, value := range modes {
 		fmt.Println("Blending Mode: ", key)
 		img, err = blend.BlendImage(src, dst, value)

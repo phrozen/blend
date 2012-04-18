@@ -19,11 +19,12 @@ func float64ToUint8(x float64) uint8 {
 }
 
 func float64ToUint16(x float64) uint16 {
-	if x < 0 {
+	if x < 0.0 {
 		return 0
 	}
-	if x > 0xFFFF {
-		return 0xFFFF
+	if x > 65535.0 {
+		return 65535
 	}
 	return uint16(int(x + 0.5))
 }
+
