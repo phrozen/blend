@@ -7,7 +7,7 @@ import (
 
 const (
 	max = 65535.0 // equals to 0xFFFF uint16 max range of color.Color
-	mid = (max / 2.0) + 0.5
+	mid = max / 2.0
 )
 
 type BlendFunc func(src, dst color.Color) color.Color
@@ -131,10 +131,7 @@ func SOFT_LIGHT(src, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, soft_light)
 }
 func soft_light(s, d float64) float64 {
-	if s > mid {
-		return d + (max-d)*((s-mid)/mid)*(0.5-math.Abs(d-mid)/max)
-	}
-	return d - d*((mid-s)/mid)*(0.5-math.Abs(d-mid)/max)
+	return (d / max) * (d + (2*s/max)*(max-d))
 }
 
 // HARD LIGHT
@@ -150,11 +147,7 @@ func hard_light(s, d float64) float64 {
 
 // VIVID LIGHT (check)
 func VIVID_LIGHT(src, dst color.Color) color.Color {
-	s := color2rgbaf64(src)
-	if s.r+s.g+s.b < mid*3 {
-		return COLOR_BURN(src, dst)
-	}
-	return COLOR_DODGE(src, dst)
+	return blend_per_channel(src, dst, vivid_light)
 }
 func vivid_light(s, d float64) float64 {
 	if s < mid {
@@ -225,12 +218,12 @@ func substract(s, d float64) float64 {
 	return d - s
 }
 
-// DIVIDE (check)
+// DIVIDE
 func DIVIDE(src, dst color.Color) color.Color {
 	return blend_per_channel(src, dst, divide)
 }
 func divide(s, d float64) float64 {
-	return s / d * max
+	return (d*max)/s + 1.0
 }
 
 /*-------------------------------------------------------*/
@@ -258,6 +251,36 @@ func reflex(s, d float64) float64 {
 		return s
 	}
 	return math.Min(max, (d * d / (max - s)))
+}
+
+/*-------------------------------------------------------*/
+
+// HUE
+func HUE(src, dst color.Color) color.Color {
+	s := rgb2hsl(src)
+	d := rgb2hsl(dst)
+	return hsl2rgb(s.h, d.s, d.l)
+}
+
+// SATURATION (check)
+func SATURATION(src, dst color.Color) color.Color {
+	s := rgb2hsl(src)
+	d := rgb2hsl(dst)
+	return hsl2rgb(d.h, s.s, d.l)
+}
+
+// COLOR (check)
+func COLOR(src, dst color.Color) color.Color {
+	s := rgb2hsl(src)
+	d := rgb2hsl(dst)
+	return hsl2rgb(s.h, s.s, d.l)
+}
+
+// LUMINOSITY
+func LUMINOSITY(src, dst color.Color) color.Color {
+	s := rgb2hsl(src)
+	d := rgb2hsl(dst)
+	return hsl2rgb(d.h, d.s, s.l)
 }
 
 /*-------------------------------------------------------*/

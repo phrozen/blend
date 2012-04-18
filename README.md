@@ -68,8 +68,12 @@ At the moment it supports the following blending modes:
 + Reflex
 + Linear Light
 + Pin Light
-+ Vivid Light
-+ Hard Mix
++ Vivid Light *(issues)*
++ Hard Mix *(issues)*
++ Hue
++ Saturation *(issues)*
++ Color *(issues)*
++ Luminosity *(issues)*
 
 Check the examples directory for more on blending modes.
 

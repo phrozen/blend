@@ -7,35 +7,41 @@
 package main
 
 import (
+	"blend"
 	"fmt"
-	"github.com/phrozen/blend"
 	"image"
 	"image/jpeg"
 	"os"
 )
 
 var modes = map[string]blend.BlendFunc{
-	"add":          blend.ADD,
-	"substract":    blend.SUBSTRACT,
-	"divide":       blend.DIVIDE,
-	"multiply":     blend.MULTIPLY,
-	"screen":       blend.SCREEN,
-	"overlay":      blend.OVERLAY,
-	"soft_light":   blend.SOFT_LIGHT,
-	"hard_light":   blend.HARD_LIGHT,
-	"color_dodge":  blend.COLOR_DODGE,
-	"color_burn":   blend.COLOR_BURN,
-	"linear_dodge": blend.LINEAR_DODGE,
-	"linear_burn":  blend.LINEAR_BURN,
-	"darken":       blend.DARKEN,
-	"lighten":      blend.LIGHTEN,
-	"difference":   blend.DIFFERENCE,
-	"exclusion":    blend.EXCLUSION,
-	"reflex":       blend.REFLEX,
-	"linear_light": blend.LINEAR_LIGHT,
-	"pin_light":    blend.PIN_LIGHT,
-	"vivid_light":  blend.VIVID_LIGHT,
-	"hard_mix":     blend.HARD_MIX,
+	"add":           blend.ADD,
+	"substract":     blend.SUBSTRACT,
+	"divide":        blend.DIVIDE,
+	"multiply":      blend.MULTIPLY,
+	"screen":        blend.SCREEN,
+	"overlay":       blend.OVERLAY,
+	"soft_light":    blend.SOFT_LIGHT,
+	"hard_light":    blend.HARD_LIGHT,
+	"color_dodge":   blend.COLOR_DODGE,
+	"color_burn":    blend.COLOR_BURN,
+	"linear_dodge":  blend.LINEAR_DODGE,
+	"linear_burn":   blend.LINEAR_BURN,
+	"darken":        blend.DARKEN,
+	"lighten":       blend.LIGHTEN,
+	"difference":    blend.DIFFERENCE,
+	"exclusion":     blend.EXCLUSION,
+	"reflex":        blend.REFLEX,
+	"linear_light":  blend.LINEAR_LIGHT,
+	"pin_light":     blend.PIN_LIGHT,
+	"vivid_light":   blend.VIVID_LIGHT,
+	"hard_mix":      blend.HARD_MIX,
+	"darker_color":  blend.DARKER_COLOR,
+	"lighter_color": blend.LIGHTER_COLOR,
+	"hue":           blend.HUE,
+	"saturation":    blend.SATURATION,
+	"color":         blend.COLOR,
+	"luminosity":    blend.LUMINOSITY,
 }
 
 func LoadJPG(filename string) (image.Image, error) {
@@ -74,7 +80,7 @@ func main() {
 	var err error
 	var img image.Image
 
-	dst, err := LoadJPG("dest.jpg")
+	dst, err := LoadJPG("destination.jpg")
 	if err != nil {
 		panic(err)
 	}
@@ -88,7 +94,7 @@ func main() {
 
 	// Testing Blending Modes with source1.png
 	for key, value := range modes {
-		fmt.Print("*Blending Mode: ", key, " ...  \t")
+		fmt.Println("Blending Mode: ", key)
 		img, err = blend.BlendImage(src, dst, value)
 		if err != nil {
 			panic(err)
@@ -97,7 +103,5 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("Saved! ", key, ".jpg")
 	}
-
 }
