@@ -94,19 +94,16 @@ func Blend(dst, src image.Image, mode BlendFunc) (image.Image, error) {
 		return nil, Error{"Top layer(src) and bot layer(dst) have different color models."}
 	}
 
-	// Boundary check to see if we can blend all pixels in the top layer
-	// into the bottom layer. Later an intersection will be used.
-	if !srcRect.In(dstRect) {
-		return nil, Error{"Top layer(src) does not fit into bottom layer(dst)."}
-	}
+	// Obtain the intersection of both images.
+	inter := dstRect.Intersect(srcRect)
 
 	// Create a new RGBA or RGBA64 image to return the values.
 	img := image.NewRGBA(dstRect)
 
 	for y := dstRect.Min.Y; y < dstRect.Max.Y; y++ {
 		for x := dstRect.Min.X; x < dstRect.Max.X; x++ {
-			// If src is inside dst, we blend both pixels
-			if p := image.Pt(x, y); p.In(srcRect) {
+			// If src is inside the intersection, we blend both pixels
+			if p := image.Pt(x, y); p.In(inter) {
 				img.Set(x, y, mode(dst.At(x, y), src.At(x, y)))
 			} else {
 				// else we copy dst pixel.
