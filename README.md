@@ -34,13 +34,13 @@ import "github.com/phrozen/blend"
 
 // Blend source (top layer) into destination (bottom layer)
 // using Color Burn blending mode.
-img, err := blend.Blend(destination, source, blend.COLOR_BURN)
+img, err := blend.Blend(destination, source, blend.ColorBurn)
 if err != nil {
   panic(err)
 }
 
-// Save img or blend it again.
-img, err := blend.Blend(img, source, blend.COLOR_BURN)
+// Save img or blend it again applying another blend mode.
+img, err := blend.Blend(img, source, blend.Screen)
 ```
 
 Can be easily extended as it uses the standard library interfaces from **'image'** and **'image/color'**.
@@ -99,8 +99,8 @@ The library uses ***float64*** internally for precision, math operations, and co
 **Notes:**
 
 + *Add, Reflex, and Phoenix modes are not in PSD.*
-+ *Vivid Light produces different results than PSD, affects Hard Mix*
-+ *Saturation, Color, and Luminosity modes produce different results than PSD, but the results are either identical to The GIMP or pretty similar.*
++ *Vivid Light produces different results than PSD, affects Hard Mix* issue #2
++ *Saturation, Color, and Luminosity modes produce different results than PSD, but the results are either identical to The GIMP or pretty similar.* issue #3
 
 Check the examples directory for more on blending modes.
 
