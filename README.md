@@ -1,4 +1,3 @@
-
 # blend
 
 Image processing library and rendering toolkit for Go. (WIP)
@@ -99,8 +98,15 @@ The library uses ***float64*** internally for precision, math operations, and co
 **Notes:**
 
 + *Add, Reflex, and Phoenix modes are not in PSD.*
+<<<<<<< HEAD
 + *Vivid Light produces different results than PSD, affects Hard Mix* issue #2
 + *Saturation, Color, and Luminosity modes produce different results than PSD, but the results are either identical to The GIMP or pretty similar.* issue #3
+=======
++ *Vivid Light produces different results than PSD, affects Hard Mix.*
+  issue #2
++ *Saturation, Color, and Luminosity modes produce different results than PSD, but the results are either identical to The GIMP or pretty similar.*
+  issue #3
+>>>>>>> 9b80bda16a283cf31911fd74de662cbfe26e6a41
 
 Check the examples directory for more on blending modes.
 
