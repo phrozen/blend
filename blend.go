@@ -86,7 +86,7 @@ func Blend(src, dst image.Image, mode BlendFunc) (image.Image, error) {
 	}
 
 	// Boundary check to see if we can blend all pixels in the top layer
-	// into the bottom layer. Later and intersection will be used.
+	// into the bottom layer. Later an intersection will be used.
 	if !src.Bounds().In(dst.Bounds()) {
 		return nil, BlendError{"Top layer(src) does not fit into bottom layer(dst)."}
 	}
@@ -392,7 +392,7 @@ func phoenix_per_ch(s, d float64) float64 {
 	return math.Min(s, d) - math.Max(s, d) + max
 }
 
-// Init function maps the blendingmode functions.
+// Init function maps the blending mode functions.
 func init() {
 	DARKEN = darken
 	MULTIPLY = multiply
