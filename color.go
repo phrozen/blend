@@ -80,10 +80,7 @@ func hsl2rgb(h, s, l float64) color.Color {
 		g = hue2rgb(p, q, h)
 		b = hue2rgb(p, q, h-1.0/3)
 	}
-	if r > 1.0 || g > 1.0 || b > 1.0 {
-		panic(BlendError{"Overflow."})
-	}
-	return rgbaf64{r*max+0.5, g*max+0.5, b*max+0.5, max}
+	return rgbaf64{r*max + 0.5, g*max + 0.5, b*max + 0.5, max}
 }
 
 func hue2rgb(p, q, t float64) float64 {

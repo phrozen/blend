@@ -1,10 +1,10 @@
 package blend
 
-type BlendError struct {
+type Error struct {
 	err string
 }
 
-func (e BlendError) Error() string {
+func (e Error) Error() string {
 	return e.err
 }
 
@@ -27,4 +27,3 @@ func float64ToUint16(x float64) uint16 {
 	}
 	return uint16(int(x + 0.5))
 }
-
