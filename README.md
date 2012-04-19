@@ -17,11 +17,12 @@ import "github.com/phrozen/blend"
 ```
 
 Use this convenience function:
+
 ```go
-func BlendImage(source, dest image.Image, blend BlendFunc) (image.Image, error) {
+func Blend(dst, src image.Image, mode BlendFunc) (image.Image, error) {
   ...
 }
-// source is the top layer, dest is the bottom layer or image to be applied to.
+// src is the top layer, dst is the bottom layer or image to be applied to.
 ```
 
 For example:
@@ -33,19 +34,19 @@ import "github.com/phrozen/blend"
 
 // Blend source (top layer) into destination (bottom layer)
 // using Color Burn blending mode.
-img, err := blend.Blend(source, destination, blend.COLOR_BURN)
+img, err := blend.Blend(destination, source, blend.COLOR_BURN)
 if err != nil {
   panic(err)
 }
 
 // Save img or blend it again.
-img, err := blend.Blend(source, img, blend.COLOR_BURN)
+img, err := blend.Blend(img, source, blend.COLOR_BURN)
 ```
 
 Can be easily extended as it uses the standard library interfaces from **'image'** and **'image/color'**.
 
 ```go
-type BlendFunc func(src, dst color.Color) color.Color
+type BlendFunc func(dst, src color.Color) color.Color
 ```
 
 A **BlendFunc** is applied to each color (RGBA) of an image (although included blend modes does not use the Alpha channel atm). Just create your own **BlendFunc** to add custom functionality.
