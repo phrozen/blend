@@ -99,7 +99,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		err = SaveJPG(name, img)
+		err = SaveJPG("blend_"+name, img)
 		if err != nil {
 			panic(err)
 		}
