@@ -95,10 +95,7 @@ func main() {
 
 	for name, mode := range modes {
 		fmt.Println("Blending Mode: ", name)
-		img, err = blend.Blend(dst, src, mode)
-		if err != nil {
-			panic(err)
-		}
+		img = blend.BlendNewImage(dst, src, mode)
 		err = SaveJPG("blend_"+name, img)
 		if err != nil {
 			panic(err)

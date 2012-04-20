@@ -30,6 +30,7 @@ package blend
 import (
 	"image"
 	"image/color"
+	"image/draw"
 	"math"
 )
 
@@ -81,37 +82,42 @@ type BlendFunc func(dst, src color.Color) color.Color
 
 // Blends src image (top layer) into dst image (bottom layer) using
 // the BlendFunc provided by mode. BlendFunc is applied to each pixel
-// where the src image overlaps the dst image and returns the resulting
-// image or an error in case of failure.
-func Blend(dst, src image.Image, mode BlendFunc) (image.Image, error) {
-
-	dstRect := dst.Bounds()
-	srcRect := src.Bounds()
-
-	// Color model check. Needs more testing to see if there is no problem 
-	// using the interfaces, to blend images with different color models.
-	if src.ColorModel() != dst.ColorModel() {
-		return nil, Error{"Top layer(src) and bot layer(dst) have different color models."}
-	}
-
+// where the src image overlaps the dst image and the result is stored
+// in the original dst image, src image is unmutable.
+func BlendImage(dst draw.Image, src image.Image, mode BlendFunc) {
 	// Obtain the intersection of both images.
-	inter := dstRect.Intersect(srcRect)
+	inter := dst.Bounds().Intersect(src.Bounds())
+	// Apply BlendFuc to each pixel in the intersection.
+	for y := inter.Min.Y; y < inter.Max.Y; y++ {
+		for x := inter.Min.X; x < inter.Max.X; x++ {
+			dst.Set(x, y, mode(dst.At(x, y), src.At(x, y)))
+		}
+	}
+}
 
+// Blends src image (top layer) into dst image (bottom layer) using
+// the BlendFunc provided by mode. BlendFunc is applied to each pixel
+// where the src image overlaps the dst image and returns the resulting
+// image without modifying src, or dst as they are both unmutable.
+func BlendNewImage(dst, src image.Image, mode BlendFunc) image.Image {
+	// Obtain the intersection of both images.
+	inter := dst.Bounds().Intersect(src.Bounds())
 	// Create a new RGBA or RGBA64 image to return the values.
-	img := image.NewRGBA(dstRect)
-
-	for y := dstRect.Min.Y; y < dstRect.Max.Y; y++ {
-		for x := dstRect.Min.X; x < dstRect.Max.X; x++ {
-			// If src is inside the intersection, we blend both pixels
+	img := image.NewRGBA(dst.Bounds())
+	// Iterate over dst image pixels.
+	for y := dst.Bounds().Min.Y; y < dst.Bounds().Max.Y; y++ {
+		for x := dst.Bounds().Min.X; x < dst.Bounds().Max.X; x++ {
+			// If src is inside the intersection, we blend both
+			// pixels using the provided BlendFunc (mode).
 			if p := image.Pt(x, y); p.In(inter) {
 				img.Set(x, y, mode(dst.At(x, y), src.At(x, y)))
 			} else {
-				// else we copy dst pixel.
+				// Else we copy dst pixel to the resulting image.
 				img.Set(x, y, dst.At(x, y))
 			}
 		}
 	}
-	return img, nil
+	return img
 }
 
 func blendPerChannel(dst, src color.Color, bf func(float64, float64) float64) color.Color {

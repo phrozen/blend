@@ -18,10 +18,10 @@ import "github.com/phrozen/blend"
 Use this convenience function:
 
 ```go
-func Blend(dst, src image.Image, mode BlendFunc) (image.Image, error) {
+func BlendNewImage(dst, src image.Image, mode BlendFunc) image.Image {
   ...
 }
-// src is the top layer, dst is the bottom layer or image to be applied to.
+// src is the top layer, dst is the bottom layer.
 ```
 
 For example:
@@ -29,20 +29,43 @@ For example:
 ```go
 import "github.com/phrozen/blend"
 
-// Read two images 'source' and 'destination'
+// Read two images 'source' and 'destination' (image.Image)
 
 // Blend source (top layer) into destination (bottom layer)
 // using Color Burn blending mode.
-img, err := blend.Blend(destination, source, blend.ColorBurn)
-if err != nil {
-  panic(err)
-}
+img1 := blend.BlendNewImage(destination, source, blend.ColorBurn)
+
 
 // Save img or blend it again applying another blend mode.
-img, err := blend.Blend(img, source, blend.Screen)
+img2 := blend.BlendNewImage(img1, source, blend.Screen)
 ```
 
-Can be easily extended as it uses the standard library interfaces from **'image'** and **'image/color'**.
+If you want to apply the Blend Mode to an image and modify it without returning a copy, you must provide a mutable image type, one that implements **'draw.Image'** interface. Use this function.
+
+```go
+func BlendImage(dst draw.Image, src image.Image, mode BlendFunc) {
+  ...
+}
+// src is the top layer, dst is the bottom layer and image that will be applied to.
+```
+
+This function is faster as it does not copy the contents of the original image and applies the Blend Mode just to the intersection of both layers. Most images returned by the encoders of the standard library are already mutable as they implement the **'draw.Image'** interface, but you will have to apply and interface/type assertion first. 
+
+*(Note: jpeg decoder returns color images in YCbCr color mode that does not implement **'draw.Image**', PNG decoder returns mostly RGBA family types and should work)*
+
+```go
+import "github.com/phrozen/blend"
+
+// Read two images 'source' and 'destination' (image.Image)
+
+dst, ok := destination.(draw.Image)
+if ok {
+  blend.BlendImage(dst, source, blend.ColorBurn)
+  blend.BlendImage(dst, source, blend.Screen)
+}
+```
+
+The package an be easily extended as it uses the standard library interfaces from **'image'**, **'image/draw'** and **'image/color'**.
 
 ```go
 type BlendFunc func(dst, src color.Color) color.Color
