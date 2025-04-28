@@ -2,6 +2,8 @@
 
 Image processing library and rendering toolkit for Go. (WIP)
 
+**ALL DEVELOPMENT HAS BEEN MOVED AND MERGED TO: https://github.com/phrozen/pixelar**
+
 ## Installation:
 
 This library is compatible with Go1.
